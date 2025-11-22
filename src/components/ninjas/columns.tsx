@@ -2,7 +2,7 @@ import { type ColumnDef } from "@tanstack/react-table"
 import { type Ninja } from "@/api/ninjas"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
-import { ArrowUpDown, Filter } from "lucide-react"
+import { Filter, ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -35,43 +35,33 @@ export const columns: ColumnDef<Ninja>[] = [
     },
     {
         accessorKey: "name",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        header: "Name",
     },
     {
         accessorKey: "location",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Location
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        header: "Location",
     },
     {
         accessorKey: "power",
         header: ({ column }) => {
+            const isSorted = column.getIsSorted();
             return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Power
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
+                <div className="flex items-center space-x-2">
+                    <span>Power</span>
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        className="h-8 w-8 p-0"
+                    >
+                        {isSorted === "asc" ? (
+                            <ChevronUp className="h-4 w-4 text-primary" />
+                        ) : isSorted === "desc" ? (
+                            <ChevronDown className="h-4 w-4 text-primary" />
+                        ) : (
+                            <ChevronsUpDown className="h-4 w-4 opacity-50" />
+                        )}
+                    </Button>
+                </div>
             )
         },
     },
@@ -83,17 +73,11 @@ export const columns: ColumnDef<Ninja>[] = [
 
             return (
                 <div className="flex items-center space-x-2">
-                    <Button
-                        variant="ghost"
-                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                    >
-                        Health
-                        <ArrowUpDown className="ml-2 h-4 w-4" />
-                    </Button>
+                    <span>Health</span>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                                <Filter className="h-4 w-4" />
+                                <Filter className={`h-4 w-4 ${selectedValues.length > 0 ? "text-primary" : "opacity-50"}`} />
                                 <span className="sr-only">Filter</span>
                             </Button>
                         </DropdownMenuTrigger>

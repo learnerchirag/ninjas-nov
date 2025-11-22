@@ -27,11 +27,15 @@ import { Input } from "@/components/ui/input"
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
+    isLoading?: boolean
+    error?: Error | null
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
+    isLoading,
+    error,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -60,15 +64,24 @@ export function DataTable<TData, TValue>({
         },
     })
 
+    const handleSubmit = () => {
+        const selectedRows = table.getFilteredSelectedRowModel().rows;
+        const selectedIds = selectedRows.map((row) => (row.original as any).id);
+        console.log("Selected IDs:", selectedIds);
+    };
+
     return (
         <div>
-            <div className="flex items-center py-4">
+            <div className="flex items-center justify-between py-4">
                 <Input
                     placeholder="Search..."
                     value={globalFilter ?? ""}
                     onChange={(event) => setGlobalFilter(event.target.value)}
                     className="max-w-sm"
                 />
+                <Button onClick={handleSubmit} disabled={table.getFilteredSelectedRowModel().rows.length === 0}>
+                    Submit Selected
+                </Button>
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -91,7 +104,19 @@ export function DataTable<TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {isLoading ? (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    Loading...
+                                </TableCell>
+                            </TableRow>
+                        ) : error ? (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center text-red-500">
+                                    Error: {error.message}
+                                </TableCell>
+                            </TableRow>
+                        ) : table.getRowModel().rows?.length ? (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
