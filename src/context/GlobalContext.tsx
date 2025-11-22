@@ -1,21 +1,23 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { fetchNinjas, type Ninja } from '@/api/ninjas';
 
 interface GlobalState {
-    count: number;
-    increment: () => void;
-    decrement: () => void;
+    ninjas: Ninja[] | undefined;
+    isLoading: boolean;
+    error: Error | null;
 }
 
 const GlobalContext = createContext<GlobalState | undefined>(undefined);
 
 export const GlobalProvider = ({ children }: { children: ReactNode }) => {
-    const [count, setCount] = useState(0);
-
-    const increment = () => setCount((prev) => prev + 1);
-    const decrement = () => setCount((prev) => prev - 1);
+    const { data: ninjas, isLoading, error } = useQuery({
+        queryKey: ['ninjas'],
+        queryFn: fetchNinjas,
+    });
 
     return (
-        <GlobalContext.Provider value={{ count, increment, decrement }}>
+        <GlobalContext.Provider value={{ ninjas, isLoading, error }}>
             {children}
         </GlobalContext.Provider>
     );
