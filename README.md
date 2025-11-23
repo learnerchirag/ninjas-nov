@@ -1,73 +1,125 @@
-# React + TypeScript + Vite
+# Ninja Database
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern React single-page application for managing and viewing ninja data with advanced filtering, sorting, and search capabilities.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📊 **Interactive Data Table** - Built with TanStack Table for high performance (1000+ rows)
+- 🔍 **Global Search** - Filter ninjas across all fields
+- ⚡ **Power Sorting** - Sort by power level with visual indicators
+- 💊 **Health Filter** - Multi-select filter for health status (Healthy, Injured, Critical)
+- ✅ **Row Selection** - Select individual or all rows with checkbox
+- 📤 **Submit Action** - Log selected ninja IDs to console
+- 🧪 **Test Coverage** - Jest + React Testing Library
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Framework**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS v4
+- **UI Components**: Shadcn UI + Radix UI
+- **Table**: TanStack Table
+- **Data Fetching**: React Query
+- **State Management**: React Context
+- **Testing**: Jest + React Testing Library
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js (v18 or higher)
+- npm
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Installation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd ninjas-nov23
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+2. Install dependencies:
+```bash
+npm install
 ```
+
+## Running the Application
+
+### 1. Start the JSON Server
+
+The app requires a local JSON server to fetch ninja data:
+
+```bash
+json-server --watch ninjas-database.json --port 3000
+```
+
+This will start the API server at `http://localhost:3000`
+
+### 2. Start the Development Server
+
+In a new terminal window:
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+## Testing
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+Run tests in watch mode:
+
+```bash
+npm test -- --watch
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm test` - Run Jest tests
+- `npm run lint` - Run ESLint
+
+## Project Structure
+
+```
+src/
+├── api/              # API functions and types
+├── components/       # React components
+│   ├── ninjas/      # Ninja-specific components
+│   └── ui/          # Shadcn UI components
+├── context/         # React Context providers
+├── test/            # Test configuration
+├── App.tsx          # Main application component
+└── main.tsx         # Application entry point
+```
+
+## Data Model
+
+```typescript
+interface Ninja {
+  id: string;
+  name: string;
+  location: string;
+  health: 'Healthy' | 'Injured' | 'Critical';
+  power: number;
+}
+```
+
+## Usage
+
+1. **Search**: Type in the search box to filter across all fields
+2. **Sort**: Click the Power column header to sort ascending/descending
+3. **Filter**: Click the filter icon in the Health column to select specific health statuses
+4. **Select**: Use checkboxes to select rows
+5. **Submit**: Click "Submit Selected" to log selected IDs to the console
+6. **Navigate**: Use Previous/Next buttons for pagination
+
+## License
+
+MIT
