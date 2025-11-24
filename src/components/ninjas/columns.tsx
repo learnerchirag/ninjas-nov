@@ -81,7 +81,7 @@ export const columns: ColumnDef<Ninja>[] = [
                                 <span className="sr-only">Filter</span>
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                        <DropdownMenuContent align="end" className="glass-popover">
                             {uniqueValues.map((value) => (
                                 <DropdownMenuCheckboxItem
                                     key={value}
@@ -100,6 +100,15 @@ export const columns: ColumnDef<Ninja>[] = [
                     </DropdownMenu>
                 </div>
             )
+        },
+        cell: ({ row }) => {
+            const health = row.getValue("health") as string;
+            const healthClass =
+                health === "Critical" ? "health-critical" :
+                    health === "Injured" ? "health-injured" :
+                        "health-healthy";
+
+            return <span className={`${healthClass}`}>{health}</span>;
         },
         filterFn: (row, id, value) => {
             return value.includes(row.getValue(id))
