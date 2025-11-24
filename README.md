@@ -43,25 +43,38 @@ npm install
 
 ## Running the Application
 
-### 1. Start the JSON Server
+### Local Development (Option 1: JSON Server)
 
-The app requires a local JSON server to fetch ninja data:
+1. Start the JSON Server:
 
 ```bash
 json-server --watch ninjas-database.json --port 3000
 ```
 
-This will start the API server at `http://localhost:3000`
 
-### 2. Start the Development Server
-
-In a new terminal window:
+3. Start the development server:
 
 ```bash
 npm run dev
 ```
 
 The app will be available at `http://localhost:5173`
+
+### Local Development (Option 2: Vercel API Routes)
+
+1. Install Vercel CLI (if not already installed):
+
+```bash
+npm install -g vercel
+```
+
+2. Start the Vercel development server:
+
+```bash
+vercel dev
+```
+
+This runs both the frontend and API routes locally.
 
 ## Testing
 
@@ -84,12 +97,13 @@ npm test -- --watch
 - `npm run preview` - Preview production build
 - `npm test` - Run Jest tests
 - `npm run lint` - Run ESLint
+- `npm run vercel-build` - Build for Vercel deployment
 
 ## Project Structure
 
 ```
 src/
-├── api/              # API functions and types
+├── api/              # API client functions and types
 ├── components/       # React components
 │   ├── ninjas/      # Ninja-specific components
 │   └── ui/          # Shadcn UI components
@@ -97,6 +111,9 @@ src/
 ├── test/            # Test configuration
 ├── App.tsx          # Main application component
 └── main.tsx         # Application entry point
+
+api/
+└── ninjas.ts         # Vercel serverless API endpoint
 ```
 
 ## Data Model
